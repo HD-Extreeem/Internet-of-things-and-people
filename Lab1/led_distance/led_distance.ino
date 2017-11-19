@@ -1,7 +1,7 @@
 int trig = D3;
 int echo = D2;
-unsigned int MAX_DIST = 580;
-
+const unsigned int MAX_DIST = 23200;
+const unsigned int MIN_DIST = 580;
 void setup() {
   // put your setup code here, to run once:
   pinMode(trig,OUTPUT);
@@ -21,22 +21,23 @@ void loop() {
 
   while(digitalRead(echo)==0);
   t1=micros();
-  while(digitalRead(echo)==0);
+  while(digitalRead(echo)==1);
   t2=micros();
   pulse_width=t2-t1;
 
   cm = (pulse_width/58.0);
   inches = (pulse_width/148.0);
 
-  if(pulse_width>MAX_DIST){
-    digitalWrite(D1,LOW);
+  if(pulse_width <= MIN_DIST){
+    digitalWrite(D1,HIGH);
   }
   else{
-    digitalWrite(D1,HIGH);
-    Serial.print(cm);
-    Serial.print("cm \t");
-    Serial.print(inches);
-    Serial.print(" in");
+    digitalWrite(D1,LOW);
   }
-  delay(60);
+  Serial.print(cm);
+  Serial.print("cm \t");
+  Serial.print(inches);
+  Serial.print(" in");
+  Serial.println();
+  delay(120);
 }
